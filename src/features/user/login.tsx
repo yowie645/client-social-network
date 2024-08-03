@@ -42,7 +42,7 @@ export const Login: React.FC<Props> = ({ setSelected }) => {
   const onSubmit = async (data: Login) => {
     try {
       await login(data).unwrap()
-      await triggerCurrentCuery()
+      await triggerCurrentCuery().unwrap()
       navigate("/")
     } catch (error) {
       if (hasErrorField(error)) {
