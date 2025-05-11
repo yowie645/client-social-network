@@ -1,5 +1,4 @@
 import type React from "react"
-
 import {
   CardBody,
   CardFooter,
@@ -31,9 +30,10 @@ import { MdOutlineFavoriteBorder } from "react-icons/md"
 import { FaRegComment } from "react-icons/fa"
 import { ErrorMessage } from "../error-message"
 import { hasErrorField } from "../../utils/has-error-field"
+import { DEFAULT_AVATAR } from "../../constants"
 
 type Props = {
-  avatarUrl: string
+  avatarUrl?: string
   name: string
   authorId: string
   content: string
@@ -68,6 +68,16 @@ export const Card: React.FC<Props> = ({
   const [error, setError] = useState("")
   const navigate = useNavigate()
   const currentUser = useSelector(selectCurrent)
+
+  // Функция для обработки URL аватарки
+  const getAvatarUrl = () => {
+    if (!avatarUrl) return DEFAULT_AVATAR
+    if (avatarUrl.startsWith("http")) return avatarUrl
+    if (avatarUrl.startsWith("/uploads")) {
+      return `${import.meta.env.VITE_API_URL || ""}${avatarUrl}`
+    }
+    return DEFAULT_AVATAR
+  }
 
   const refetchPosts = async () => {
     switch (cardFor) {
@@ -133,6 +143,7 @@ export const Card: React.FC<Props> = ({
       }
     }
   }
+
   return (
     <NextUiCard className="mb-5">
       <CardHeader className="justify-between items-center bg-transparent">
@@ -140,7 +151,7 @@ export const Card: React.FC<Props> = ({
           <User
             name={name}
             className="text-small font-semibold leading-none text-default-600"
-            avatarUrl={avatarUrl}
+            avatarUrl={getAvatarUrl()} // Используем обработанный URL
             description={
               createdAt ? formatToClientDate(createdAt).toString() : undefined
             }
@@ -149,9 +160,9 @@ export const Card: React.FC<Props> = ({
         {authorId === currentUser?.id && (
           <div className="cursor-pointer" onClick={handleDelete}>
             {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
-              <Spinner />
+              <Spinner size="sm" />
             ) : (
-              <RiDeleteBinLine />
+              <RiDeleteBinLine className="text-danger" />
             )}
           </div>
         )}
@@ -162,14 +173,19 @@ export const Card: React.FC<Props> = ({
       {cardFor !== "comment" && (
         <CardFooter className="gap-3">
           <div className="flex gap-5 items-center">
-            <div onClick={handleClick}>
+            <div onClick={handleClick} className="cursor-pointer">
               <MetaInfo
                 count={likesCount}
                 Icon={likedByUser ? FcDislike : MdOutlineFavoriteBorder}
+                iconColor={likedByUser ? "text-danger" : "text-default-500"}
               />
             </div>
             <Link to={`/posts/${id}`}>
-              <MetaInfo count={commentsCount} Icon={FaRegComment} />
+              <MetaInfo
+                count={commentsCount}
+                Icon={FaRegComment}
+                iconColor="text-default-500"
+              />
             </Link>
           </div>
           <ErrorMessage error={error} />
