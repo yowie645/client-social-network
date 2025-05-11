@@ -28,26 +28,24 @@ export const UserProfile = () => {
   const { id } = useParams<{ id: string }>()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const currentUser = useSelector(selectCurrent)
-  const { data } = useGetUserByIdQuery(id ?? "")
+  const { data, isLoading, isError } = useGetUserByIdQuery(id ?? "")
   const [followUser] = useFollowUserMutation()
   const [unfollowUser] = useUnfollowUserMutation()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
-  const [triggerCurentQuery] = useLazyCurrentQuery()
+  const [triggerCurrentQuery] = useLazyCurrentQuery()
   const dispatch = useDispatch()
 
-  useEffect(
-    () => () => {
-      dispatch(resetUser())
-    },
-    [],
-  )
+  const profileIdNum = id ? Number(id) : null
+  const currentUserIdNum = currentUser?.id ? Number(currentUser.id) : null
 
-  if (!data) {
-    return null
-  }
+  useEffect(() => {
+    return () => {
+      dispatch(resetUser())
+    }
+  }, [dispatch])
 
   const getAvatarUrl = () => {
-    if (!data.avatarUrl) return DEFAULT_AVATAR
+    if (!data?.avatarUrl) return DEFAULT_AVATAR
     return data.avatarUrl.startsWith("http")
       ? data.avatarUrl
       : `${BASE_URL}${data.avatarUrl}`
@@ -55,16 +53,20 @@ export const UserProfile = () => {
 
   const handleFollow = async () => {
     try {
-      if (id) {
-        data?.isFollowing
-          ? await unfollowUser(id).unwrap()
-          : await followUser({ followingId: id }).unwrap()
+      if (profileIdNum === null) return
 
-        await triggerGetUserByIdQuery(id)
-        await triggerCurentQuery()
+      const payload = { followingId: profileIdNum }
+
+      if (data?.isFollowing) {
+        await unfollowUser(payload).unwrap()
+      } else {
+        await followUser(payload).unwrap()
       }
+
+      await triggerGetUserByIdQuery(id!)
+      await triggerCurrentQuery()
     } catch (error) {
-      console.error(error)
+      console.error("Follow operation failed:", error)
     }
   }
 
@@ -72,13 +74,17 @@ export const UserProfile = () => {
     try {
       if (id) {
         await triggerGetUserByIdQuery(id)
-        await triggerCurentQuery()
+        await triggerCurrentQuery()
         onClose()
       }
     } catch (error) {
-      console.error(error)
+      console.error("Error refreshing data:", error)
     }
   }
+
+  if (isLoading) return <div>Загрузка профиля...</div>
+  if (isError) return <div>Ошибка загрузки профиля</div>
+  if (!data) return null
 
   return (
     <>
@@ -91,15 +97,14 @@ export const UserProfile = () => {
             width={200}
             height={200}
             className="border-4 border-white object-cover"
-            onError={() => {
-              console.error("Error loading image")
-              // The fallbackSrc prop will handle showing the default avatar
-            }}
+            onError={() => console.error("Error loading avatar")}
             fallbackSrc={DEFAULT_AVATAR}
           />
           <div className="flex flex-col text-2xl font-bold gap-4 item-center">
             {data.name}
-            {currentUser?.id !== id ? (
+            {currentUserIdNum !== null &&
+            profileIdNum !== null &&
+            currentUserIdNum !== profileIdNum ? (
               <Button
                 color={data.isFollowing ? "default" : "primary"}
                 variant="flat"
@@ -116,7 +121,7 @@ export const UserProfile = () => {
                 {data.isFollowing ? "Отписаться" : "Подписаться"}
               </Button>
             ) : (
-              <Button endContent={<CiEdit />} onClick={() => onOpen()}>
+              <Button endContent={<CiEdit />} onClick={onOpen}>
                 Редактировать
               </Button>
             )}
