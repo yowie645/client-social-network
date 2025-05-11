@@ -13,7 +13,7 @@ import {
   useUnfollowUserMutation,
 } from "../../app/services/followApi"
 import { GoBack } from "../../components/go-back"
-import { BASE_URL } from "../../constants"
+import { BASE_URL, DEFAULT_AVATAR } from "../../constants"
 import {
   MdOutlinePersonAddAlt1,
   MdOutlinePersonAddDisabled,
@@ -34,15 +34,25 @@ export const UserProfile = () => {
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [triggerCurentQuery] = useLazyCurrentQuery()
   const dispatch = useDispatch()
+
   useEffect(
     () => () => {
       dispatch(resetUser())
     },
     [],
   )
+
   if (!data) {
     return null
   }
+
+  const getAvatarUrl = () => {
+    if (!data.avatarUrl) return DEFAULT_AVATAR
+    return data.avatarUrl.startsWith("http")
+      ? data.avatarUrl
+      : `${BASE_URL}${data.avatarUrl}`
+  }
+
   const handleFollow = async () => {
     try {
       if (id) {
@@ -69,17 +79,23 @@ export const UserProfile = () => {
       console.error(error)
     }
   }
+
   return (
     <>
       <GoBack />
       <div className="flex items-center gap-4">
         <Card className="flex flex-col items-center text-center space-y-4 p-5 flex-2">
           <Image
-            src={`${BASE_URL}${data.avatarUrl}`}
+            src={getAvatarUrl()}
             alt={data.name}
             width={200}
             height={200}
             className="border-4 border-white object-cover"
+            onError={() => {
+              console.error("Error loading image")
+              // The fallbackSrc prop will handle showing the default avatar
+            }}
+            fallbackSrc={DEFAULT_AVATAR}
           />
           <div className="flex flex-col text-2xl font-bold gap-4 item-center">
             {data.name}
