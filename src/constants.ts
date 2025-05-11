@@ -1,4 +1,6 @@
+// constants.ts
 export const BASE_URL =
-  process.env.NODE_ENV === "production"
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.MODE === "production"
     ? "https://express-api-social-network.onrender.com"
-    : "http://localhost:3000"
+    : "http://localhost:3000")
