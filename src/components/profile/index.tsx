@@ -2,9 +2,9 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/user/userSlice"
 import { Card, CardBody, CardHeader, Image } from "@nextui-org/react"
-import { BASE_URL } from "../../constants"
 import { Link } from "react-router-dom"
 import { MdAlternateEmail } from "react-icons/md"
+import { BASE_URL } from "../../constants"
 
 export const Profile = () => {
   const current = useSelector(selectCurrent)
@@ -13,14 +13,20 @@ export const Profile = () => {
   }
   const { name, email, avatarUrl, id } = current
 
+  const getAvatarUrl = () => {
+    if (!avatarUrl) return ""
+    return avatarUrl.startsWith("http") ? avatarUrl : `${BASE_URL}${avatarUrl}`
+  }
+
   return (
     <Card className="py-4 w-[302px]">
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
         <Image
           alt="card profile"
           className="object-cover rounded-xl"
-          src={`${BASE_URL}${avatarUrl}`}
+          src={getAvatarUrl()}
           width={370}
+          fallbackSrc="https://i.pinimg.com/736x/bc/a6/1f/bca61feaa9516a0bdf69c79207177917.jpg"
         />
       </CardHeader>
       <CardBody>
