@@ -23,6 +23,7 @@ const baseQuery = fetchBaseQuery({
 
     return headers
   },
+  mode: "cors",
 })
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 1 })
