@@ -10,6 +10,8 @@ ClientSocialNetwork is a sleek, modern client application for a social network, 
 
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
+- **This is the frontend repository the backend for this repository is located here - https://github.com/yowie645/express-api-social-network**
+
 ### ✨ Key Features
 
 - **User Profiles:** View and edit your profile with ease.
@@ -20,28 +22,19 @@ ClientSocialNetwork is a sleek, modern client application for a social network, 
 
 ## 📸 Screenshots
 
-### 🤖 Example of a bot interface
+### 🖼️ Interface
 
-- **Command** `/start`
-
-  ![Command /start](screenshots/start.jpg)
-  _Welcome to the bot’s main menu — your gateway to effortless link saving and exploration._
-
-- **Command** `/help`
-
-  ![Command /help](screenshots/help.jpg)
-  _Helpful instructions at your fingertips — learn how to save links quickly and efficiently._
-
-- **Command** `/random`
-
-  ![Command /random](screenshots/random.jpg)
-  _Discover hidden treasures from your saved collection with a simple `/random` command._
-
-  ![Error handling of an existing link](screenshots/double.jpg)
-  _Smart duplicate detection — the bot kindly lets you know if you've already saved that link._
-
-![error handling if the user has not uploaded any links](screenshots/noSavedLinks.jpg)
-_Friendly reminder when no links are saved yet — encouraging you to start your bookmarking journey!_
+![1](screenshots/11.jpg)
+![2](screenshots/10.jpg)
+![3](screenshots/9.jpg)
+![4](screenshots/8.jpg)
+![5](screenshots/7.jpg)
+![5](screenshots/6.jpg)
+![5](screenshots/5.jpg)
+![5](screenshots/4.jpg)
+![5](screenshots/3.jpg)
+![5](screenshots/2.jpg)
+![5](screenshots/1.jpg)
 
 ---
 
@@ -66,7 +59,7 @@ _Friendly reminder when no links are saved yet — encouraging you to start your
 - `preview` - locally preview production build
 - `test` - launch test runner
 
-### Run the bot
+### Run
 
 - npm run dev
 
