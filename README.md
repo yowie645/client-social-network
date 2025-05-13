@@ -54,13 +54,9 @@ ClientSocialNetwork is a sleek, modern client application for a social network, 
 
 ## Scripts
 
-- `dev`/`start` - start dev server and open browser
+- `dev` - start dev server and open browser
 - `build` - build for production
 - `preview` - locally preview production build
 - `test` - launch test runner
-
-### Run
-
-- npm run dev
 
 <img src="screenshots/prev.jpg" width="100%" height="200px" alt="Preview">
