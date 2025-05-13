@@ -20,6 +20,10 @@ ClientSocialNetwork is a sleek, modern client application for a social network, 
 - **Avatar & Cover Updates:** Easily change your profile and cover images.
 - **Followers & Subscriptions:** Track who follows you and manage your subscriptions.
 
+### 🌈.ENV
+
+- **VITE_API_URL**= VITE_API_URL
+
 ## 📸 Screenshots
 
 ### 🖼️ Interface
@@ -54,7 +58,7 @@ ClientSocialNetwork is a sleek, modern client application for a social network, 
 
 ## Scripts
 
-- `dev` - start dev server and open browser
+- `dev`/`start` - start dev server
 - `build` - build for production
 - `preview` - locally preview production build
 - `test` - launch test runner
